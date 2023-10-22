@@ -1,64 +1,27 @@
-NAME = so_long
+NAME_BASIC = so_long
+NAME_BONUS = so_long_bonus
 
-CC = gcc
-FLAGS = -Wall -Wextra -Werror
+RM = rm -rf
 
-SRC				=	./src/main/main.c \
-					./src/main/so_long.c \
-					./src/main/get_size_of_coin.c \
-					./src/main/set_location_player.c \
-					./src/main/set_all_sprites.c \
-					./src/main/finish_game.c \
-					./src/main/move.c \
-					./src/main/set_window.c
+all:
+	@make -C $(NAME_BASIC) all
 
-OBJS			=	main.o \
-					so_long.o \
-					get_size_of_coin.o \
-					set_location_player.o \
-					set_all_sprites.o \
-					finish_game.o \
-					move.o \
-					set_window.o
-
-CHECKER_PATH	=	./src/checker
-CHECKER			=	$(CHECKER_PATH)/checker.a
-
-LIBFT_PATH		=	./src/libft
-LIBFT			=	$(LIBFT_PATH)/libft.a
-
-MINILIBX_PATH	=	./src/minilibx
-
-all : $(NAME)
-
-$(NAME):			$(LIBFT) $(CHECKER) print mlx
-					@$(CC) $(FLAGS) $(SRC) $(LIBFT) $(CHECKER) -framework OpenGL -framework AppKit -L$(MINILIBX_PATH) -lmlx -o $(NAME)
-
-$(LIBFT):
-		@make -C $(LIBFT_PATH) all
-
-$(CHECKER):
-		@make -C $(CHECKER_PATH) all
-
-mlx:
-		@make -C $(MINILIBX_PATH) all
-
-print:
-		@printf "\033[0;32mSo Long Make yapildi\n\033[0m"
+bonus:
+	@make -C $(NAME_BONUS) all
 
 clean:
-	@rm -f  $(OBJS)
-	@make -C $(LIBFT_PATH) clean
-	@make -C $(CHECKER_PATH) clean
-	@printf "\033[0;33mSo Long clean yapildi\n\033[0m"
+	@make -C $(NAME_BASIC) clean
+
+bclean:
+	@make -C $(NAME_BONUS) clean
 
 fclean:
-	@printf "\033[0;33mSo Long fclean yapildi\n\033[0m"
-	@rm -f  $(OBJS)
-	@make -C $(LIBFT_PATH) fclean
-	@make -C $(CHECKER_PATH) fclean
-	@rm -f $(NAME)
+	@make -C $(NAME_BASIC) fclean
+
+bfclean:
+	@make -C $(NAME_BONUS) fclean
 
 re: fclean all
+bre: bfclean bonus
 
-.PHONY : all clean fclean re
+.PHONY: all clean bclean fclean bfclean re bre bonus
